@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import AccountNav from "@/components/account-nav";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Dev Doctor | Diagnose the failure",
@@ -9,7 +12,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body><AccountNav />{children}</body>
     </html>
   );
 }

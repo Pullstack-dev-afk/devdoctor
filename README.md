@@ -16,6 +16,22 @@ Open `http://localhost:3000`.
 
 The default `mock` provider makes the app usable without a paid model or an API key. Keep real credentials in `.env.local`; never place them in client components or committed files.
 
+## Environment variables
+
+- `AI_PROVIDER=mock` uses the included local provider. Other provider values fail clearly until a matching server-side adapter is configured.
+- `OPENAI_API_KEY` is reserved for a future server-side provider adapter and must never be exposed with a `NEXT_PUBLIC_` name.
+- `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` power browser/server sessions. Next.js exposes only these two non-secret values to the browser at build time; `SUPABASE_SECRET_KEY` is server-only and is required for account deletion and payment review. The older `NEXT_PUBLIC_SUPABASE_*` and `SUPABASE_SERVICE_ROLE_KEY` aliases are also supported.
+- `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, and `PAYPAL_ENVIRONMENT` configure optional PayPal Sandbox/production checkout. The secret is server-only.
+- `PRO_PRICE`, `PRO_CURRENCY`, `PRO_DURATION_DAYS`, `BANK_NAME`, `BANK_ACCOUNT_HOLDER`, `BANK_IBAN`, `BANK_SWIFT`, and `ADMIN_USER_IDS` configure membership and manual review.
+
+## Supabase setup
+
+Create a Supabase project, copy its URL and anon key into `.env.local`, and run `supabase/migrations/001_memberships.sql` in the Supabase SQL editor. The migration creates the profile, membership, payment request tables, signup trigger, and RLS policies. Set `ADMIN_USER_IDS` to a comma-separated list of trusted Supabase Auth user IDs.
+
+## Deploy to Vercel
+
+Import the repository into Vercel, keep the default Next.js build settings, and add the variables above in the project environment settings. Deploy, then open the generated URL.
+
 ## Architecture
 
 - `src/app/page.tsx` contains the focused diagnostic workflow and calls the server API.
